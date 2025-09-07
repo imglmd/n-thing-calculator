@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kiryha.calculator.ui.calculator.Calculator
 import com.kiryha.calculator.ui.calculator.CalculatorViewModel
 import com.kiryha.calculator.ui.theme.CalculatorTheme
+import com.kiryha.calculator.ui.theme.FontStyle
 import com.kiryha.calculator.ui.theme.ThemeMode
 import com.kiryha.calculator.utils.PreferencesManager
 import kotlinx.serialization.Serializable
@@ -37,10 +38,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var currentTheme by remember {
-                mutableStateOf(PreferencesManager.getThemeMode(this))
-            }
-            CalculatorTheme(themeMode = currentTheme) {
+            var currentTheme by remember { mutableStateOf(PreferencesManager.getThemeMode(this)) }
+            var fontStyle by remember { mutableStateOf(PreferencesManager.getFontStyle(this)) }
+            CalculatorTheme(
+                themeMode = currentTheme,
+                fontStyle = fontStyle
+            ) {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
@@ -80,7 +83,11 @@ class MainActivity : ComponentActivity() {
                                 currentTheme = newTheme
                                 PreferencesManager.saveThemeMode(this@MainActivity, newTheme)
                             },
-                            navController = navController,
+                            onFontChanged = { newFont ->
+                                fontStyle = newFont
+                                PreferencesManager.saveFontStyle(this@MainActivity, newFont)
+                            },
+                            navController = navController
                         )
                     }
                 }

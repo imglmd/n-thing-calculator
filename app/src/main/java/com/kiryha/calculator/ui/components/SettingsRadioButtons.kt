@@ -3,13 +3,11 @@ package com.kiryha.calculator.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -23,15 +21,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun <T> SettingsRadioButton(
+fun <T> SettingsRadioButtons(
     options: List<T>,
     selectedOption: T,
     onOptionSelected: (T) -> Unit,
-    optionToString: (T) -> String, // Функция для преобразования опции в отображаемый текст
+    optionToTextStyle: (T) -> Pair<String, TextStyle?>, // Изменено: возвращает пару (строка, стиль)
     label: String = "Выберите опцию:",
     modifier: Modifier = Modifier
 ) {
@@ -44,17 +43,18 @@ fun <T> SettingsRadioButton(
             text = label,
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(10.dp))
-        Column (
+            modifier = Modifier.padding(10.dp)
+        )
+        Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp)),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             options.forEach { option ->
+                val (text, textStyle) = optionToTextStyle(option)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-
                         .clip(RoundedCornerShape(4.dp))
                         .clickable {
                             selected = option
@@ -62,12 +62,11 @@ fun <T> SettingsRadioButton(
                         }
                         .background(MaterialTheme.colorScheme.primary)
                         .padding(5.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = optionToString(option),
-                        fontSize = 18.sp,
+                        text = text,
+                        style = textStyle ?: MaterialTheme.typography.bodyMedium, // Используем стиль или дефолтный
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .weight(1f)
@@ -85,10 +84,8 @@ fun <T> SettingsRadioButton(
                             selectedColor = MaterialTheme.colorScheme.onPrimary
                         )
                     )
-
                 }
             }
         }
-
     }
 }

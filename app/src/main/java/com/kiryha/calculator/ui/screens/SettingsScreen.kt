@@ -18,29 +18,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.kiryha.calculator.ui.components.SettingsRadioButton
+import com.kiryha.calculator.ui.components.SettingsRadioButtons
+import com.kiryha.calculator.ui.theme.FontStyle
+import com.kiryha.calculator.ui.theme.NDot57
+import com.kiryha.calculator.ui.theme.NType87
 import com.kiryha.calculator.ui.theme.ThemeMode
 import com.kiryha.calculator.utils.PreferencesManager
 
 @Composable
 fun SettingsScreen(
     onThemeChanged: (ThemeMode) -> Unit,
+    onFontChanged: (FontStyle) -> Unit,
     navController: NavController,
     modifier: Modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
-        .statusBarsPadding(),
+        .statusBarsPadding()
 ) {
     val context = LocalContext.current
     val currentTheme = PreferencesManager.getThemeMode(context)
+    val currentFont = PreferencesManager.getFontStyle(context)
 
     Column(modifier = modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
-                onClick = { navController.popBackStack() },
+                onClick = { navController.popBackStack() }
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -56,20 +62,44 @@ fun SettingsScreen(
                 fontSize = 36.sp
             )
         }
-        SettingsRadioButton(
+        SettingsRadioButtons(
             options = listOf(ThemeMode.Light, ThemeMode.System, ThemeMode.Dark),
             selectedOption = currentTheme,
             onOptionSelected = { newTheme ->
+                println("Theme selected: $newTheme") // Для отладки
+                PreferencesManager.saveThemeMode(context, newTheme)
                 onThemeChanged(newTheme)
             },
-            optionToString = { theme ->
+            optionToTextStyle = { theme ->
                 when (theme) {
-                    ThemeMode.Light -> "Светлая"
-                    ThemeMode.System -> "Системная"
-                    ThemeMode.Dark -> "Темная"
+                    ThemeMode.Light -> "Светлая" to null
+                    ThemeMode.System -> "Системная" to null
+                    ThemeMode.Dark -> "Темная" to null
                 }
             },
             label = "Тема"
+        )
+        SettingsRadioButtons(
+            options = listOf(FontStyle.NDot57, FontStyle.NType87),
+            selectedOption = currentFont,
+            onOptionSelected = { newFont ->
+                println("Font selected: $newFont") // Для отладки
+                PreferencesManager.saveFontStyle(context, newFont)
+                onFontChanged(newFont)
+            },
+            optionToTextStyle = { font ->
+                when (font) {
+                    FontStyle.NDot57 -> "N-Dot 57" to TextStyle(
+                        fontFamily = NDot57,
+                        fontSize = 18.sp
+                    )
+                    FontStyle.NType87 -> "N-Type 87" to TextStyle(
+                        fontFamily = NType87,
+                        fontSize = 18.sp
+                    )
+                }
+            },
+            label = "Шрифт"
         )
     }
 }

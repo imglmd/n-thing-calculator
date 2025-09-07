@@ -1,19 +1,14 @@
 package com.kiryha.calculator.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme = darkColorScheme(
     background = Black,
@@ -50,7 +45,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun CalculatorTheme(
     themeMode: ThemeMode = ThemeMode.System,
-    // Dynamic color is available on Android 12+
+    fontStyle: FontStyle = FontStyle.NDot57,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -69,14 +64,21 @@ fun CalculatorTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+    val fontFamily = when (fontStyle) {
+        FontStyle.NDot57 -> NDot57
+        FontStyle.NType87 -> NType87
+    }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = getTypography(fontFamily),
         content = content
     )
 }
 
 enum class ThemeMode {
     Light, Dark, System
+}
+enum class FontStyle {
+    NDot57, NType87
 }
