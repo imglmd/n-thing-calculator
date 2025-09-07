@@ -305,6 +305,19 @@ fun Calculator(
     } else {
         Box(modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.CenterEnd) {
+            IconButton(
+                onClick = { navController.navigate(com.kiryha.calculator.ui.screens.SettingsScreen) },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+            ) {
+                Icon(
+                    //imageVector = Icons.Default.Settings,
+                    painter = painterResource(id = R.drawable.settings_icon),
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(buttonSpacing)) {
                 Text(
                     text = state.number1 + (state.operation?.symbol ?: "") + state.number2,

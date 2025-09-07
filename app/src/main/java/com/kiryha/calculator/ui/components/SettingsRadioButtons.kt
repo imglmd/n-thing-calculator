@@ -42,6 +42,7 @@ fun <T> SettingsRadioButtons(
         Text(
             text = label,
             fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(10.dp)
         )
@@ -66,7 +67,8 @@ fun <T> SettingsRadioButtons(
                 ) {
                     Text(
                         text = text,
-                        style = textStyle ?: MaterialTheme.typography.bodyMedium, // Используем стиль или дефолтный
+                        style = textStyle ?: MaterialTheme.typography.bodyMedium,
+                        fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .weight(1f)
