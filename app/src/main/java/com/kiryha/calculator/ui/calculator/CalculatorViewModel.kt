@@ -1,9 +1,12 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.ui.calculator
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.kiryha.calculator.data.model.CalculatorAction
+import com.kiryha.calculator.data.model.CalculatorOperation
+import com.kiryha.calculator.data.model.CalculatorState
 import kotlin.math.pow
 
 class CalculatorViewModel: ViewModel() {

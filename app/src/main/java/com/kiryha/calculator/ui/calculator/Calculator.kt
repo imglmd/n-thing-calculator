@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.ui.calculator
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,28 +9,54 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.kiryha.calculator.R
+import com.kiryha.calculator.utils.WindowInfo
+import com.kiryha.calculator.data.model.CalculatorAction
+import com.kiryha.calculator.data.model.CalculatorOperation
+import com.kiryha.calculator.data.model.CalculatorState
+import com.kiryha.calculator.utils.rememberWindowInfo
+import com.kiryha.calculator.ui.components.CalculatorButton
 
 @Composable
 fun Calculator(
     state: CalculatorState,
     modifier: Modifier = Modifier,
     buttonSpacing: Dp = 8.dp,
-    onAction: (CalculatorAction) -> Unit
+    onAction: (CalculatorAction) -> Unit,
+    navController: NavController
 ) {
     val windowInfo = rememberWindowInfo()
     if(windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact){
         Box(modifier = modifier) {
+            IconButton(
+                onClick = { navController.navigate(com.kiryha.calculator.ui.screens.SettingsScreen) },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+            ) {
+                Icon(
+                    //imageVector = Icons.Default.Settings,
+                    painter = painterResource(id = R.drawable.settings_icon),
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

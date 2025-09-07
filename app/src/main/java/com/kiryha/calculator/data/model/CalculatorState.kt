@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.data.model
 
 data class CalculatorState(
     val number1: String = "",

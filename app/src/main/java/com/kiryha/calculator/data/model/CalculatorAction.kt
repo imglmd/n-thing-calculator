@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.data.model
 
 sealed class CalculatorAction {
     data class Number(val number: Int): CalculatorAction()

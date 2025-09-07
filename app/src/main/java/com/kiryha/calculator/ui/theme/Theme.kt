@@ -49,11 +49,17 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun CalculatorTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode = ThemeMode.System,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val darkTheme = when (themeMode){
+        ThemeMode.Light -> false
+        ThemeMode.Dark -> true
+        ThemeMode.System -> isSystemInDarkTheme()
+    }
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -69,4 +75,8 @@ fun CalculatorTheme(
         typography = Typography,
         content = content
     )
+}
+
+enum class ThemeMode {
+    Light, Dark, System
 }

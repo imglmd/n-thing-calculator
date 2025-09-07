@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

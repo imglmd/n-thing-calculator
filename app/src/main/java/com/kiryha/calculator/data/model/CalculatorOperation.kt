@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.data.model
 
 sealed class CalculatorOperation(val symbol: String) {
     object Add: CalculatorOperation("+")

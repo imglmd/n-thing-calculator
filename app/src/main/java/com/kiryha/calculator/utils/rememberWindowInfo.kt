@@ -1,4 +1,4 @@
-package com.kiryha.calculator
+package com.kiryha.calculator.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
