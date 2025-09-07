@@ -54,13 +54,14 @@ fun <T> SettingsRadioButton(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+
                         .clip(RoundedCornerShape(4.dp))
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(5.dp)
-                        .clickable { // Делает всю строку кликабельной
+                        .clickable {
                             selected = option
                             onOptionSelected(option)
-                        },
+                        }
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(5.dp),
                     verticalAlignment = Alignment.CenterVertically,
 
                 ) {

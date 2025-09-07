@@ -28,6 +28,7 @@ import com.kiryha.calculator.ui.calculator.Calculator
 import com.kiryha.calculator.ui.calculator.CalculatorViewModel
 import com.kiryha.calculator.ui.theme.CalculatorTheme
 import com.kiryha.calculator.ui.theme.ThemeMode
+import com.kiryha.calculator.utils.PreferencesManager
 import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +37,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var currentTheme by remember { mutableStateOf(ThemeMode.System) }
+            var currentTheme by remember {
+                mutableStateOf(PreferencesManager.getThemeMode(this))
+            }
             CalculatorTheme(themeMode = currentTheme) {
                 val navController = rememberNavController()
                 NavHost(
@@ -73,7 +76,10 @@ class MainActivity : ComponentActivity() {
                         popExitTransition = { slideOutHorizontally(animationSpec = tween(300)) { it } }
                     ) {
                         SettingsScreen(
-                            onThemeChanged = { newTheme -> currentTheme = newTheme },
+                            onThemeChanged = { newTheme ->
+                                currentTheme = newTheme
+                                PreferencesManager.saveThemeMode(this@MainActivity, newTheme)
+                            },
                             navController = navController,
                         )
                     }
