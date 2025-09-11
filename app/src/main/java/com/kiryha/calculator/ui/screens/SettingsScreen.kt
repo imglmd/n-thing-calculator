@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -65,46 +66,52 @@ fun SettingsScreen(
                     fontSize = 36.sp
                 )
             }
-            SettingsRadioButtons(
-                options = listOf(ThemeMode.Light, ThemeMode.System, ThemeMode.Dark),
-                selectedOption = currentTheme,
-                onOptionSelected = { newTheme ->
-                    println("Theme selected: $newTheme") // Для отладки
-                    PreferencesManager.saveThemeMode(context, newTheme)
-                    onThemeChanged(newTheme)
-                },
-                optionToTextStyle = { theme ->
-                    when (theme) {
-                        ThemeMode.Light -> "Светлая" to null
-                        ThemeMode.System -> "Системная" to null
-                        ThemeMode.Dark -> "Темная" to null
-                    }
-                },
-                label = "Тема"
-            )
-            SettingsRadioButtons(
-                options = listOf(FontStyle.NDot57, FontStyle.NType87),
-                selectedOption = currentFont,
-                onOptionSelected = { newFont ->
-                    println("Font selected: $newFont") // Для отладки
-                    PreferencesManager.saveFontStyle(context, newFont)
-                    onFontChanged(newFont)
-                },
-                optionToTextStyle = { font ->
-                    when (font) {
-                        FontStyle.NDot57 -> "N-Dot 57" to TextStyle(
-                            fontFamily = NDot57,
-                            fontSize = 18.sp
-                        )
+            LazyColumn(){
+                item {
+                    SettingsRadioButtons(
+                        options = listOf(ThemeMode.Light, ThemeMode.System, ThemeMode.Dark),
+                        selectedOption = currentTheme,
+                        onOptionSelected = { newTheme ->
+                            println("Theme selected: $newTheme") // Для отладки
+                            PreferencesManager.saveThemeMode(context, newTheme)
+                            onThemeChanged(newTheme)
+                        },
+                        optionToTextStyle = { theme ->
+                            when (theme) {
+                                ThemeMode.Light -> "Светлая" to null
+                                ThemeMode.System -> "Системная" to null
+                                ThemeMode.Dark -> "Темная" to null
+                            }
+                        },
+                        label = "Тема"
+                    )
+                }
+                item {
+                    SettingsRadioButtons(
+                        options = listOf(FontStyle.NDot57, FontStyle.NType87),
+                        selectedOption = currentFont,
+                        onOptionSelected = { newFont ->
+                            println("Font selected: $newFont") // Для отладки
+                            PreferencesManager.saveFontStyle(context, newFont)
+                            onFontChanged(newFont)
+                        },
+                        optionToTextStyle = { font ->
+                            when (font) {
+                                FontStyle.NDot57 -> "N-Dot 57" to TextStyle(
+                                    fontFamily = NDot57,
+                                    fontSize = 18.sp
+                                )
 
-                        FontStyle.NType87 -> "N-Type 87" to TextStyle(
-                            fontFamily = NType87,
-                            fontSize = 18.sp
-                        )
-                    }
-                },
-                label = "Шрифт"
-            )
+                                FontStyle.NType87 -> "N-Type 87" to TextStyle(
+                                    fontFamily = NType87,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        },
+                        label = "Шрифт"
+                    )
+                }
+            }
         }
     } else {
         Column(modifier = modifier.padding(16.dp)) {
