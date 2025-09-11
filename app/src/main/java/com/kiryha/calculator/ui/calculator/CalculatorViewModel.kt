@@ -27,25 +27,14 @@ class CalculatorViewModel: ViewModel() {
     private fun performCalculation() {
         val number1 = state.number1.replace(",", ".").toDoubleOrNull()
         val number2 = state.number2.replace(",", ".").toDoubleOrNull()
-        if (number1 != null && number2 != null) {
-            val result = when(state.operation) {
-                is CalculatorOperation.Add -> number1 + number2
-                is CalculatorOperation.Subtract -> number1 - number2
-                is CalculatorOperation.Multiply -> number1 * number2
-                is CalculatorOperation.Divide -> number1 / number2
-                is CalculatorOperation.Power -> number1.pow(number2)
-                is CalculatorOperation.Percent -> (number1 * number2) / 100.0
-                null -> return
-            }
-            val formattedResult = if (result % 1.0 == 0.0) {
-                result.toLong().toString()
-            } else {
-                String.format("%.10f", result).trimEnd('0').trimEnd('.')
-            }
+        val result = calculateResult(number1, number2, state.operation)
+        if (result != null) {
             state = state.copy(
-                number1 = formattedResult.take(15),
+                number1 = result.take(15),
                 number2 = "",
-                operation = null
+                operation = null,
+                currentResult = " ",
+                showCurrentResult = false
             )
         }
     }
@@ -53,14 +42,18 @@ class CalculatorViewModel: ViewModel() {
     private fun enterOperation(operation: CalculatorOperation){
         if(state.number1.isNotBlank()){
             state = state.copy(operation = operation)
+            updateCurrentResult()
         }
     }
 
     private fun performDeletion(){
         when {
-            state.number2.isNotBlank() -> state = state.copy(
-                number2 = state.number2.dropLast(1)
-            )
+            state.number2.isNotBlank() -> {
+                state = state.copy(
+                    number2 = state.number2.dropLast(1)
+                )
+                updateCurrentResult()
+            }
             state.operation != null -> state = state.copy(
                 operation = null
             )
@@ -83,6 +76,7 @@ class CalculatorViewModel: ViewModel() {
             state = state.copy(
                 number2 = state.number2 + ","
             )
+            updateCurrentResult()
         }
     }
 
@@ -102,6 +96,41 @@ class CalculatorViewModel: ViewModel() {
         state = state.copy(
             number2 = state.number2 + number
         )
+        updateCurrentResult()
+    }
+
+    private fun updateCurrentResult() {
+        val number1 = state.number1.replace(",", ".").toDoubleOrNull()
+        val number2 = state.number2.replace(",", ".").toDoubleOrNull()
+        val result = calculateResult(number1, number2, state.operation)
+        state = if (result != null) {
+            state.copy(
+                currentResult = result.take(15),
+                showCurrentResult = true
+            )
+        } else {
+            state.copy(currentResult = " ", showCurrentResult = false)
+        }
+    }
+
+
+    private fun calculateResult(number1: Double?, number2: Double?, operation: CalculatorOperation?): String? {
+        if (number1 == null || number2 == null || operation == null) return null
+        if (operation is CalculatorOperation.Divide && number2 == 0.0) return "Error"
+
+        val result = when (operation) {
+            is CalculatorOperation.Add -> number1 + number2
+            is CalculatorOperation.Subtract -> number1 - number2
+            is CalculatorOperation.Multiply -> number1 * number2
+            is CalculatorOperation.Divide -> number1 / number2
+            is CalculatorOperation.Power -> number1.pow(number2)
+            is CalculatorOperation.Percent -> (number1 * number2) / 100.0
+        }
+        return if (result % 1.0 == 0.0) {
+            result.toLong().toString()
+        } else {
+            String.format("%.10f", result).trimEnd('0').trimEnd('.')
+        }
     }
 
     companion object {

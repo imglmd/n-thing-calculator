@@ -76,7 +76,7 @@ fun Calculator(
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 32.dp),
+                        .padding(vertical = 10.dp),
                     fontWeight = FontWeight.Light,
                     fontSize = 80.sp,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -85,6 +85,20 @@ fun Calculator(
                     overflow = TextOverflow.Ellipsis,
                     softWrap = true,
                     lineHeight = 70.sp
+                )
+                Text(
+                    text = state.currentResult,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 26.dp),
+                    fontWeight = FontWeight.Light,
+                    fontSize = 45.sp,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    softWrap = true,
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -327,12 +341,15 @@ fun Calculator(
                 )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(buttonSpacing)) {
-                Text(
+                Column(modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 32.dp),
+                ) {
+                    Text(
                     text = state.number1 + (state.operation?.symbol ?: "") + state.number2,
                     textAlign = TextAlign.End,
                     modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .weight(1f),
+                        .fillMaxWidth(),
                     fontWeight = FontWeight.Light,
                     fontSize = 80.sp,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -341,6 +358,22 @@ fun Calculator(
                     softWrap = true,
                     lineHeight = 70.sp
                 )
+                    Text(
+                        text = state.currentResult,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 26.dp),
+                        fontWeight = FontWeight.Light,
+                        fontSize = 45.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        softWrap = true,
+                    )
+                }
+
                 Column(
                     modifier = Modifier.fillMaxHeight(),
                     verticalArrangement = Arrangement.spacedBy(buttonSpacing)
