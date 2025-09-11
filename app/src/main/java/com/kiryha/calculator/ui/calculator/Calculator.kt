@@ -1,5 +1,6 @@
 package com.kiryha.calculator.ui.calculator
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,10 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.kiryha.calculator.R
 import com.kiryha.calculator.utils.WindowInfo
 import com.kiryha.calculator.data.model.CalculatorAction
@@ -32,6 +37,9 @@ import com.kiryha.calculator.data.model.CalculatorOperation
 import com.kiryha.calculator.data.model.CalculatorState
 import com.kiryha.calculator.utils.rememberWindowInfo
 import com.kiryha.calculator.ui.components.CalculatorButton
+import com.kiryha.calculator.ui.theme.CalculatorTheme
+import com.kiryha.calculator.ui.theme.FontStyle
+import com.kiryha.calculator.ui.theme.ThemeMode
 
 @Composable
 fun Calculator(
@@ -557,5 +565,26 @@ fun Calculator(
 
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CalculatorPreview() {
+    CalculatorTheme(
+        themeMode = ThemeMode.Dark,
+        fontStyle = FontStyle.NType87
+    ) {
+        Calculator(
+            state = CalculatorState(number1 = "123"),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(8.dp)
+                .statusBarsPadding(),
+            buttonSpacing = 8.dp,
+            onAction = {},
+            navController = rememberNavController()
+        )
     }
 }
